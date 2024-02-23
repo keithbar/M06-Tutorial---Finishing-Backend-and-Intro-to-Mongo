@@ -1,14 +1,18 @@
 const express = require("express");
 const morgan = require("morgan");
+const mongoose = require("mongoose");
 
 //express app
 const app = express();
 
+//connect to mongodb
+const dbURI = "mongodb+srv://kbarber34:GqfsU5ySDoU3onwL@sdev255.gxv9ds4.mongodb.net/M06Tutorial?retryWrites=true&w=majority&appName=SDEV255"
+mongoose.connect(dbURI)
+    .then((result) => app.listen(3000))
+    .catch((err) => console.log(err));
+
 //register view engine
 app.set("view engine", "ejs");
-
-//listen for requests
-app.listen(3000);
 
 //middleware and static files
 app.use(express.static("public"));
