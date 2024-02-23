@@ -1,6 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
+const Blog = require("./models/blog");
 
 //express app
 const app = express();
@@ -17,6 +18,43 @@ app.set("view engine", "ejs");
 //middleware and static files
 app.use(express.static("public"));
 app.use(morgan("dev"));
+
+//mongoose
+app.get("/add-blog", (req, res) => {
+    const blog = new Blog({
+        title: "new blog",
+        snippet: "about new blog",
+        body: "more about new blog"
+    });
+
+    blog.save()
+        .then((result) => {
+            res.send(result);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
+app.get("/all-blogs", (req, res) => {
+    Blog.find()
+        .then((result) => {
+            res.send(result);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
+app.get("/single-blog", (req, res) => {
+    Blog.findById("65d7f8e6b466102d9be7cc42")
+        .then((result) => {
+            res.send(result);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
 
 app.get("/", (req, res) => {
     const blogs = [
